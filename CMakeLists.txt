@@ -9,6 +9,7 @@ set(EIGEN3_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/eigen")
 
 # Find up and set up core dependency libs
 find_package(Eigen3 REQUIRED)
+include_directories(${CMAKE_SOURCE_DIR}/external/eigen/)
 find_package(PythonLibs REQUIRED)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")

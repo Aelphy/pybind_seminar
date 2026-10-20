@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.15...3.31)
 
 project(my_project)
 
@@ -10,18 +10,18 @@ set(EIGEN3_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/eigen")
 # Find up and set up core dependency libs
 find_package(Eigen3 REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/external/eigen/)
-find_package(PythonLibs REQUIRED)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-set(PYBIND11_CPP_STANDARD -std=c++11)
+# Enable C++14 for host code (required by modern pybind11)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(PYBIND11_FINDPYTHON ON)
 add_subdirectory("${CMAKE_SOURCE_DIR}/external/pybind11")
 
 list(APPEND dl)
-
-# Enable C++11 for host code
-set(CMAKE_CXX_STANDARD 11)
 
 # Crucial magic for CUDA linking
 # find_package(CUDA 10.0 REQUIRED)
@@ -64,4 +64,3 @@ set_target_properties(my_project PROPERTIES
 
 # target_link_libraries(my_project PRIVATE my_project_cu)
 target_link_libraries(my_project PRIVATE pybind11::module)
-target_include_directories(my_project PUBLIC ${PYTHON_INCLUDE_DIRS})
